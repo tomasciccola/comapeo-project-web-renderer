@@ -15,20 +15,6 @@ Render an export of a CoMapeo Project
 [X] Fix tagging. Taggings hold form data, but also a 'rope' system that resolves to a specific category. Both exist on the tags field. The idea is to be able to resolve the category following the 'rope'. f.e.  on one hand, and on the other detect which are parts of the form to render on the details panel
     [x] Be able to resolve a category by following the tags rope
     [x] Be able to show form data that aren't part of the category resolution
-```json
-// rope part, note how more general resolve to more particular (type-> nature -> water -> body of water)
-          "type": "nature",
-          "nature": "water",
-          "water": "body-of-water",
-// this part is form data
-          "name": "Unas cosa",
-          "body-of-water-type": "headwaters",
-          "conditions": "unusual",
-          "natural-resource-type": [
-            "water"
-          ],
-          "cultural-name": "Cosa"
-```
 
 [x] Allow displaying tracks. Tracks are exported on a separate geojson with schema name track. they have a list of locations. Tracks should be displayed as a line joining the points that comprise it. They are not located on the zip file, so they need to be loaded separately
 
