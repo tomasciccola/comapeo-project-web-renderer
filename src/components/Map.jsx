@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Polyline, Tooltip, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -23,11 +23,11 @@ const DEFAULT_ZOOM = 4;
 // Component to fit map bounds to all features
 function FitBounds({ features }) {
   const map = useMap();
-  
-  React.useEffect(() => {
+
+  useEffect(() => {
     if (features && features.length > 0) {
       const allCoords = [];
-      
+
       for (const f of features) {
         if (f.geometry.type === 'Point') {
           allCoords.push([f.geometry.coordinates[1], f.geometry.coordinates[0]]);
@@ -37,14 +37,14 @@ function FitBounds({ features }) {
           }
         }
       }
-      
+
       if (allCoords.length > 0) {
         const bounds = L.latLngBounds(allCoords);
         map.fitBounds(bounds, { padding: [50, 50] });
       }
     }
   }, [features, map]);
-  
+
   return null;
 }
 
@@ -57,12 +57,12 @@ const TRACK_STYLE = {
 
 function Map({ geojson, onSelectFeature }) {
   const features = geojson?.features || [];
-  
+
   // Separate observations (Points) from tracks (LineStrings)
   const { observations, tracks } = useMemo(() => {
     const observations = [];
     const tracks = [];
-    
+
     for (const feature of features) {
       if (feature.geometry.type === 'Point') {
         observations.push(feature);
@@ -70,10 +70,10 @@ function Map({ geojson, onSelectFeature }) {
         tracks.push(feature);
       }
     }
-    
+
     return { observations, tracks };
   }, [features]);
-  
+
   return (
     <MapContainer
       center={DEFAULT_CENTER}
@@ -84,16 +84,16 @@ function Map({ geojson, onSelectFeature }) {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      
+
       <FitBounds features={features} />
-      
+
       {/* Render tracks as polylines */}
       {tracks.map((track) => {
         const { coordinates } = track.geometry;
         const { tags, createdAt } = track.properties;
         // Convert [lng, lat] to [lat, lng] for Leaflet
         const positions = coordinates.map(coord => [coord[1], coord[0]]);
-        
+
         return (
           <Polyline
             key={track.properties.docId}
@@ -113,7 +113,7 @@ function Map({ geojson, onSelectFeature }) {
           </Polyline>
         );
       })}
-      
+
       {/* Render observations as markers */}
       {observations.map((feature) => {
         const { coordinates } = feature.geometry;
@@ -121,10 +121,10 @@ function Map({ geojson, onSelectFeature }) {
         const position = [coordinates[1], coordinates[0]];
         const { category } = resolveCategory(tags);
         const categoryLabel = getCategoryLabel(category);
-        
+
         return (
-          <Marker 
-            key={feature.properties.docId} 
+          <Marker
+            key={feature.properties.docId}
             position={position}
             eventHandlers={{
               click: () => onSelectFeature?.(feature)

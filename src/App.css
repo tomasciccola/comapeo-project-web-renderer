@@ -31,7 +31,8 @@ header h1 {
   font-weight: 500;
 }
 
-.load-btn {
+.load-btn,
+.list-btn {
   background-color: #3498db;
   color: white;
   border: none;
@@ -41,13 +42,22 @@ header h1 {
   font-size: 0.875rem;
 }
 
-.load-btn:hover {
+.load-btn:hover,
+.list-btn:hover {
   background-color: #2980b9;
 }
 
 .load-btn:disabled {
   background-color: #7f8c8d;
   cursor: not-allowed;
+}
+
+.list-btn {
+  background-color: #27ae60;
+}
+
+.list-btn:hover {
+  background-color: #219a52;
 }
 
 .point-count {

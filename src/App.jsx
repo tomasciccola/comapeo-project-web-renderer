@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Map from './components/Map';
 import DetailsPanel from './components/DetailsPanel';
+import ListView from './components/ListView';
 import './App.css';
 
 function App() {
@@ -9,6 +10,7 @@ function App() {
   const [error, setError] = useState(null);
   const [projectLoaded, setProjectLoaded] = useState(false);
   const [selectedFeature, setSelectedFeature] = useState(null);
+  const [showListView, setShowListView] = useState(false);
 
   // Check if project is already loaded
   useEffect(() => {
@@ -38,11 +40,11 @@ function App() {
   const handleLoadExample = async () => {
     setLoading(true);
     setError(null);
-    
+
     try {
       const res = await fetch('/api/extract-example', { method: 'POST' });
       const data = await res.json();
-      
+
       if (data.success) {
         setProjectLoaded(true);
         await loadGeojson();
@@ -61,8 +63,8 @@ function App() {
       <header>
         <h1>CoMapeo Project Renderer</h1>
         {!projectLoaded && (
-          <button 
-            onClick={handleLoadExample} 
+          <button
+            onClick={handleLoadExample}
             disabled={loading}
             className="load-btn"
           >
@@ -70,17 +72,31 @@ function App() {
           </button>
         )}
         {geojson && (
-          <span className="point-count">
-            {geojson.features.length} observation(s)
-          </span>
+          <>
+            <button
+              onClick={() => setShowListView(!showListView)}
+              className="list-btn"
+            >
+              {showListView ? 'Hide List' : 'Show List'}
+            </button>
+            <span className="point-count">
+              {geojson.features.length} item(s)
+            </span>
+          </>
         )}
       </header>
       {error && <div className="error">{error}</div>}
       <main className="map-container">
         <Map geojson={geojson} onSelectFeature={setSelectedFeature} />
-        <DetailsPanel 
-          feature={selectedFeature} 
-          onClose={() => setSelectedFeature(null)} 
+        {showListView && (
+          <ListView
+            geojson={geojson}
+            onClose={() => setShowListView(false)}
+          />
+        )}
+        <DetailsPanel
+          feature={selectedFeature}
+          onClose={() => setSelectedFeature(null)}
         />
       </main>
     </div>
