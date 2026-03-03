@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Map from './components/Map';
 import DetailsPanel from './components/DetailsPanel';
 import ListView from './components/ListView';
+import CreateProjectModal from './components/CreateProjectModal';
+import ProjectListModal from './components/ProjectListModal';
 import './App.css';
 
 function App() {
@@ -9,8 +11,11 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [projectLoaded, setProjectLoaded] = useState(false);
+  const [currentProjectName, setCurrentProjectName] = useState(null);
   const [selectedFeature, setSelectedFeature] = useState(null);
   const [showListView, setShowListView] = useState(false);
+  const [showCreateProjectModal, setShowCreateProjectModal] = useState(false);
+  const [showProjectListModal, setShowProjectListModal] = useState(false);
 
   // Check if project is already loaded
   useEffect(() => {
@@ -19,6 +24,7 @@ function App() {
       .then(data => {
         if (data.loaded) {
           setProjectLoaded(true);
+          setCurrentProjectName(data.name || 'Unnamed Project');
           loadGeojson();
         }
       })
@@ -47,6 +53,7 @@ function App() {
 
       if (data.success) {
         setProjectLoaded(true);
+        setCurrentProjectName('Example Project');
         await loadGeojson();
       } else {
         setError(data.error || 'Failed to load example');
@@ -58,32 +65,82 @@ function App() {
     }
   };
 
+  const handleProjectCreated = async (projectName) => {
+    setProjectLoaded(true);
+    setCurrentProjectName(projectName);
+    await loadGeojson();
+  };
+
+  const handleProjectSelected = async (projectName) => {
+    setProjectLoaded(true);
+    setCurrentProjectName(projectName);
+    setSelectedFeature(null);
+    await loadGeojson();
+  };
+
+  const handleProjectDeleted = (wasCurrentProject) => {
+    if (wasCurrentProject) {
+      // Clear the current project state
+      setProjectLoaded(false);
+      setCurrentProjectName(null);
+      setGeojson(null);
+      setSelectedFeature(null);
+    }
+  };
+
+  const handleProjectUpdated = async (projectName) => {
+    // Reload the geojson data if files were added to the current project
+    if (projectName === currentProjectName) {
+      await loadGeojson();
+    }
+  };
+
   return (
     <div className="app">
       <header>
         <h1>CoMapeo Project Renderer</h1>
-        {!projectLoaded && (
+        <button
+          className="current-project-btn"
+          onClick={() => setShowProjectListModal(true)}
+          title="View all projects"
+        >
+          {currentProjectName ? (
+            <>Project: <strong>{currentProjectName}</strong></>
+          ) : (
+            'Select Project'
+          )}
+          <span className="project-dropdown-icon">▼</span>
+        </button>
+        <div className="header-actions">
           <button
-            onClick={handleLoadExample}
-            disabled={loading}
-            className="load-btn"
+            onClick={() => setShowCreateProjectModal(true)}
+            className="create-project-btn"
           >
-            {loading ? 'Loading...' : 'Load Example Data'}
+            + New Project
           </button>
-        )}
-        {geojson && (
-          <>
+          {!projectLoaded && (
             <button
-              onClick={() => setShowListView(!showListView)}
-              className="list-btn"
+              onClick={handleLoadExample}
+              disabled={loading}
+              className="load-btn"
             >
-              {showListView ? 'Hide List' : 'Show List'}
+              {loading ? 'Loading...' : 'Load Example Data'}
             </button>
-            <span className="point-count">
-              {geojson.features.length} item(s)
-            </span>
-          </>
-        )}
+          )}
+          {geojson && (
+            <>
+              <button
+                onClick={() => setShowListView(!showListView)}
+                className="list-btn"
+              >
+                {showListView ? 'Hide List' : 'Show List'}
+              </button>
+              <span className="point-count">
+                {geojson.features.length} item(s)
+              </span>
+            </>
+          )}
+        </div>
       </header>
       {error && <div className="error">{error}</div>}
       <main className="map-container">
@@ -99,6 +156,21 @@ function App() {
           onClose={() => setSelectedFeature(null)}
         />
       </main>
+      {showCreateProjectModal && (
+        <CreateProjectModal
+          onClose={() => setShowCreateProjectModal(false)}
+          onProjectCreated={handleProjectCreated}
+        />
+      )}
+      {showProjectListModal && (
+        <ProjectListModal
+          onClose={() => setShowProjectListModal(false)}
+          onProjectSelected={handleProjectSelected}
+          onProjectDeleted={handleProjectDeleted}
+          onProjectUpdated={handleProjectUpdated}
+          currentProjectName={currentProjectName}
+        />
+      )}
     </div>
   );
 }

@@ -1,0 +1,218 @@
+.project-list-modal {
+  max-width: 550px;
+}
+
+.project-list-content {
+  padding: 1rem;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.project-list-loading,
+.project-list-empty {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: #666;
+}
+
+.project-list-hint {
+  font-size: 0.85rem;
+  color: #888;
+  margin-top: 0.5rem;
+}
+
+.project-list-error {
+  background: #fef2f2;
+  color: #dc2626;
+  padding: 0.75rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+  border: 1px solid #fee2e2;
+}
+
+.project-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.project-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  margin-bottom: 0.75rem;
+  background: #fafafa;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.project-item:last-child {
+  margin-bottom: 0;
+}
+
+.project-item:hover {
+  border-color: #ccc;
+  background: #f5f5f5;
+}
+
+.project-item.current {
+  border-color: #3498db;
+  background: #f0f7fc;
+}
+
+.project-item.busy {
+  opacity: 0.7;
+}
+
+.project-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.project-item-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.project-item-name {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.project-item-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  background: #3498db;
+  color: white;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.project-item-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.project-item-date,
+.project-item-stats {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.project-item-select-btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  background: #3498db;
+  color: white;
+  flex-shrink: 0;
+}
+
+.project-item-select-btn:hover:not(:disabled) {
+  background: #2980b9;
+}
+
+.project-item-select-btn:disabled {
+  background: #bdc3c7;
+  cursor: default;
+}
+
+.project-item.current .project-item-select-btn {
+  background: #95a5a6;
+}
+
+.project-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.project-item-add-btn,
+.project-item-delete-btn {
+  padding: 0.5rem 0.6rem;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+}
+
+.project-item-add-btn {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.project-item-add-btn:hover:not(:disabled) {
+  background: #e0f2fe;
+  border-color: #7dd3fc;
+}
+
+.project-item-delete-btn:hover:not(:disabled) {
+  background: #fee2e2;
+  border-color: #fca5a5;
+}
+
+.project-item-add-btn:disabled,
+.project-item-delete-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.delete-confirm {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.delete-confirm-text {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #dc2626;
+}
+
+.delete-confirm-btn {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.delete-confirm-btn.yes {
+  background: #dc2626;
+  color: white;
+}
+
+.delete-confirm-btn.yes:hover {
+  background: #b91c1c;
+}
+
+.delete-confirm-btn.no {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.delete-confirm-btn.no:hover {
+  background: #d1d5db;
+}

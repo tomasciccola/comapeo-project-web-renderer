@@ -24,6 +24,42 @@ header {
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: auto;
+}
+
+.current-project-btn {
+  font-size: 0.875rem;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.375rem 0.75rem;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.current-project-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.current-project-btn strong {
+  font-weight: 600;
+}
+
+.project-dropdown-icon {
+  font-size: 0.6rem;
+  opacity: 0.7;
 }
 
 header h1 {
@@ -32,7 +68,8 @@ header h1 {
 }
 
 .load-btn,
-.list-btn {
+.list-btn,
+.create-project-btn {
   background-color: #3498db;
   color: white;
   border: none;
@@ -43,7 +80,8 @@ header h1 {
 }
 
 .load-btn:hover,
-.list-btn:hover {
+.list-btn:hover,
+.create-project-btn:hover {
   background-color: #2980b9;
 }
 
@@ -58,6 +96,14 @@ header h1 {
 
 .list-btn:hover {
   background-color: #219a52;
+}
+
+.create-project-btn {
+  background-color: #9b59b6;
+}
+
+.create-project-btn:hover {
+  background-color: #8e44ad;
 }
 
 .point-count {
